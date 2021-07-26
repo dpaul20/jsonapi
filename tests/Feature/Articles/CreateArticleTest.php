@@ -20,9 +20,9 @@ class CreateArticleTest extends TestCase
             'data' => [
                 'type' => 'articles',
                 'attributes' => [
-                    'title' => 'Título',
-                    'slug' => 'nuevo-titulo',
-                    'content' => 'Nuevo contenido del articulo'
+                    'title' => 'Nuevo artículo',
+                    'slug' => 'nuevo-articulo',
+                    'content' => 'Contenido del artículo'
                 ]
             ]
         ]);
@@ -31,19 +31,19 @@ class CreateArticleTest extends TestCase
 
         $article = Article::first();
 
-        $this->withHeaders([
+        $response->assertHeader(
             'Location',
             route('api.v1.articles.show', $article)
-        ]);
-        
+        );
+
         $response->assertExactJson([
             'data' => [
                 'type' => 'articles',
                 'id' => (string) $article->getRouteKey(),
                 'attributes' => [
-                    'title' => $article->title,
-                    'slug' => $article->slug,
-                    'content' => $article->content
+                    'title' => 'Nuevo artículo',
+                    'slug' => 'nuevo-articulo',
+                    'content' => 'Contenido del artículo'
                 ],
                 'links' => [
                     'self' => route('api.v1.articles.show', $article)
